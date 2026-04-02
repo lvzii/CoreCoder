@@ -5,13 +5,13 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Tests](https://github.com/he-yufeng/NanoCoder/actions/workflows/ci.yml/badge.svg)](https://github.com/he-yufeng/NanoCoder/actions)
 
+[English](README.md) | [中文](README_CN.md) | [Claude Code Architecture Deep Dive (7 articles)](article/)
+
 **512,000 lines of TypeScript → 1,300 lines of Python.**
 
 I read every line of the leaked Claude Code source. Then I threw away everything that wasn't load-bearing and rebuilt the core in Python. This is the result: a fully functional AI coding agent that fits in your head.
 
 > *Think [nanoGPT](https://github.com/karpathy/nanoGPT) for coding agents.*
-
-[English](README.md) | [中文](README_CN.md) | [Claude Code Architecture Deep Dive (7 articles)](article/)
 
 ---
 
