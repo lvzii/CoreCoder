@@ -54,26 +54,18 @@ Every pattern is a real, runnable implementation — not a diagram or a blog pos
 pip install nanocoder
 ```
 
-### Kimi K2.5 (recommended — multimodal agentic, 256K context)
+Pick your model — any OpenAI-compatible API works:
 
 ```bash
-export OPENAI_API_KEY=your-key
-export OPENAI_BASE_URL=https://api.moonshot.ai/v1
+# Kimi K2.5
+export OPENAI_API_KEY=your-key OPENAI_BASE_URL=https://api.moonshot.ai/v1
 nanocoder -m kimi-k2.5
-```
 
-### Claude Opus 4.6 (via OpenRouter)
-
-```bash
-export OPENAI_API_KEY=your-openrouter-key
-export OPENAI_BASE_URL=https://openrouter.ai/api/v1
+# Claude Opus 4.6 (via OpenRouter)
+export OPENAI_API_KEY=your-key OPENAI_BASE_URL=https://openrouter.ai/api/v1
 nanocoder -m anthropic/claude-opus-4-6
-```
 
-### More providers
-
-```bash
-# GPT-4o (OpenAI)
+# GPT-4o
 export OPENAI_API_KEY=sk-...
 nanocoder -m gpt-4o
 
@@ -81,19 +73,17 @@ nanocoder -m gpt-4o
 export OPENAI_API_KEY=sk-... OPENAI_BASE_URL=https://api.deepseek.com
 nanocoder -m deepseek-chat
 
-# Qwen 3.5 (Alibaba)
+# Qwen 3.5
 export OPENAI_API_KEY=sk-... OPENAI_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 nanocoder -m qwen-max
 
-# Local (Ollama)
+# Ollama (local)
 export OPENAI_API_KEY=ollama OPENAI_BASE_URL=http://localhost:11434/v1
 nanocoder -m qwen3:32b
 
 # One-shot mode
 nanocoder -p "add error handling to parse_config()"
 ```
-
-Works with **any OpenAI-compatible API**: Kimi, Claude (via OpenRouter), GPT, DeepSeek, Qwen, Gemini, GLM, Ollama, vLLM, Together AI.
 
 ## Architecture
 

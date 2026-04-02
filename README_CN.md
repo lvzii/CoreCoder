@@ -54,26 +54,18 @@ Claude Code 51 万行源码提炼出来的 7 个核心模式：
 pip install nanocoder
 ```
 
-### Kimi K2.5（推荐，多模态 Agent 模型，256K 上下文）
+选你的模型，任何 OpenAI 兼容 API 都行：
 
 ```bash
-export OPENAI_API_KEY=你的key
-export OPENAI_BASE_URL=https://api.moonshot.ai/v1
+# Kimi K2.5
+export OPENAI_API_KEY=你的key OPENAI_BASE_URL=https://api.moonshot.ai/v1
 nanocoder -m kimi-k2.5
-```
 
-### Claude Opus 4.6（通过 OpenRouter）
-
-```bash
-export OPENAI_API_KEY=你的openrouter-key
-export OPENAI_BASE_URL=https://openrouter.ai/api/v1
+# Claude Opus 4.6（通过 OpenRouter）
+export OPENAI_API_KEY=你的key OPENAI_BASE_URL=https://openrouter.ai/api/v1
 nanocoder -m anthropic/claude-opus-4-6
-```
 
-### 更多模型
-
-```bash
-# GPT-4o (OpenAI)
+# GPT-4o
 export OPENAI_API_KEY=sk-...
 nanocoder -m gpt-4o
 
@@ -81,19 +73,17 @@ nanocoder -m gpt-4o
 export OPENAI_API_KEY=sk-... OPENAI_BASE_URL=https://api.deepseek.com
 nanocoder -m deepseek-chat
 
-# 通义千问 Qwen 3.5
+# Qwen 3.5
 export OPENAI_API_KEY=sk-... OPENAI_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 nanocoder -m qwen-max
 
-# Ollama（本地部署）
+# Ollama（本地）
 export OPENAI_API_KEY=ollama OPENAI_BASE_URL=http://localhost:11434/v1
 nanocoder -m qwen3:32b
 
 # 单次模式
 nanocoder -p "给 parse_config() 加上错误处理"
 ```
-
-支持**任何 OpenAI 兼容 API**：Kimi、Claude（via OpenRouter）、GPT、DeepSeek、Qwen、Gemini、GLM、Ollama、vLLM、Together AI。
 
 ## 架构
 
