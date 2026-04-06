@@ -10,7 +10,7 @@
 
 [中文](README_CN.md) | [English](README.md) | [Claude Code Architecture Deep Dive (7 articles)](article/)
 
-**512,000 lines of TypeScript → 950 lines of Python.**
+**512,000 lines of TypeScript → ~1,400 lines of Python.**
 
 I spent two days reverse-engineering the leaked Claude Code source — all half a million lines. Then I stripped it down to the load-bearing walls and rebuilt them in Python. The result: **every key architectural pattern from Claude Code, in a codebase you can read in one sitting.**
 
@@ -37,7 +37,7 @@ Fixed: halper → helper.
 
 ## What You Get
 
-Claude Code's 512K lines distilled to 7 patterns that actually matter:
+Claude Code's 512K lines distilled into ~1,400 lines across 7 patterns that actually matter:
 
 | Pattern | Claude Code | CoreCoder |
 |---|---|---|
@@ -94,21 +94,21 @@ The whole thing fits in your head:
 
 ```
 corecoder/
-├── cli.py            REPL + commands               160 lines
-├── agent.py          Agent loop + parallel tools    120 lines
-├── llm.py            Streaming client + retry       150 lines
-├── context.py        3-layer compression            145 lines
-├── session.py        Save/resume                     65 lines
-├── prompt.py         System prompt                   35 lines
-├── config.py         Env config                      30 lines
+├── cli.py            REPL + commands               218 lines
+├── agent.py          Agent loop + parallel tools    122 lines
+├── llm.py            Streaming client + retry       156 lines
+├── context.py        3-layer compression            196 lines
+├── session.py        Save/resume                     68 lines
+├── prompt.py         System prompt                   33 lines
+├── config.py         Env config                      55 lines
 └── tools/
-    ├── bash.py       Shell + safety + cd tracking    95 lines
-    ├── edit.py       Search-replace + diff            70 lines
-    ├── read.py       File reading                     40 lines
-    ├── write.py      File writing                     30 lines
-    ├── glob_tool.py  File search                      35 lines
-    ├── grep.py       Content search                   65 lines
-    └── agent.py      Sub-agent spawning               50 lines
+    ├── bash.py       Shell + safety + cd tracking   115 lines
+    ├── edit.py       Search-replace + diff            85 lines
+    ├── read.py       File reading                     53 lines
+    ├── write.py      File writing                     36 lines
+    ├── glob_tool.py  File search                      47 lines
+    ├── grep.py       Content search                   78 lines
+    └── agent.py      Sub-agent spawning               58 lines
 ```
 
 ## Use as a Library
@@ -152,7 +152,7 @@ quit             Exit
 
 |  | Claude Code | Claw-Code | Aider | CoreCoder |
 |---|---|---|---|---|
-| Code | 512K lines (closed) | 100K+ lines | 50K+ lines | **1,300 lines** |
+| Code | 512K lines (closed) | 100K+ lines | 50K+ lines | **~1,400 lines** |
 | Models | Anthropic only | Multi | Multi | **Any OpenAI-compatible** |
 | Readable? | No | Hard | Medium | **One afternoon** |
 | Purpose | Use it | Use it | Use it | **Understand it, build yours** |

@@ -10,7 +10,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Tests](https://github.com/he-yufeng/CoreCoder/actions/workflows/ci.yml/badge.svg)](https://github.com/he-yufeng/CoreCoder/actions)
 
-**51万行 TypeScript → 950 行 Python。**
+**51万行 TypeScript → ~1400 行 Python。**
 
 我逆向了 Claude Code 泄露的全部源码，然后把不承重的部分全扔掉，用 Python 重建了核心。成果：**Claude Code 的每一个关键架构模式，浓缩在一个下午能读完的代码库里。**
 
@@ -94,21 +94,21 @@ corecoder -p "给 parse_config() 加上错误处理"
 
 ```
 corecoder/
-├── cli.py            REPL + 命令                   160 行
-├── agent.py          Agent 循环 + 并行执行          120 行
-├── llm.py            流式客户端 + 重试              150 行
-├── context.py        三层压缩                       145 行
-├── session.py        会话保存/恢复                   65 行
-├── prompt.py         系统提示词                      35 行
-├── config.py         环境变量配置                    30 行
+├── cli.py            REPL + 命令                   218 行
+├── agent.py          Agent 循环 + 并行执行          122 行
+├── llm.py            流式客户端 + 重试              156 行
+├── context.py        三层压缩                       196 行
+├── session.py        会话保存/恢复                   68 行
+├── prompt.py         系统提示词                      33 行
+├── config.py         环境变量配置                    55 行
 └── tools/
-    ├── bash.py       Shell + 安全 + cd 追踪          95 行
-    ├── edit.py       搜索替换 + diff                  70 行
-    ├── read.py       文件读取                         40 行
-    ├── write.py      文件写入                         30 行
-    ├── glob_tool.py  文件搜索                         35 行
-    ├── grep.py       内容搜索                         65 行
-    └── agent.py      子代理生成                       50 行
+    ├── bash.py       Shell + 安全 + cd 追踪         115 行
+    ├── edit.py       搜索替换 + diff                  85 行
+    ├── read.py       文件读取                         53 行
+    ├── write.py      文件写入                         36 行
+    ├── glob_tool.py  文件搜索                         47 行
+    ├── grep.py       内容搜索                         78 行
+    └── agent.py      子代理生成                       58 行
 ```
 
 ## 当库用
@@ -152,7 +152,7 @@ quit             退出
 
 |  | Claude Code | Claw-Code | Aider | CoreCoder |
 |---|---|---|---|---|
-| 代码量 | 51万行（闭源） | 10万+行 | 5万+行 | **1300 行** |
+| 代码量 | 51万行（闭源） | 10万+行 | 5万+行 | **~1400 行** |
 | 模型 | 仅 Anthropic | 多模型 | 多模型 | **任意 OpenAI 兼容** |
 | 能通读吗？ | 不能 | 很难 | 有点费劲 | **一个下午** |
 | 适合 | 直接用 | 直接用 | 直接用 | **先看懂，再造自己的** |
