@@ -8,8 +8,14 @@ provider by changing OPENAI_BASE_URL + OPENAI_API_KEY. That's it.
 import json
 import time
 from dataclasses import dataclass, field
-
+import nlpertools
 from openai import OpenAI, APIError, RateLimitError, APITimeoutError, APIConnectionError
+
+from datetime import datetime
+
+
+def get_current_time():
+    return datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
 @dataclass
@@ -98,8 +104,7 @@ class LLM:
             return None
         input_rate, output_rate = pricing
         return (
-            self.total_prompt_tokens * input_rate / 1_000_000
-            + self.total_completion_tokens * output_rate / 1_000_000
+            self.total_prompt_tokens * input_rate / 1_000_000 + self.total_completion_tokens * output_rate / 1_000_000
         )
 
     def chat(
@@ -173,7 +178,16 @@ class LLM:
 
         self.total_prompt_tokens += prompt_tok
         self.total_completion_tokens += completion_tok
+        # save log
 
+        nlpertools.save_json(
+            {
+                "input": messages,
+                "content": "".join(content_parts),
+                "tool_calls": [{"id": tc.id, "name": tc.name, "arguments": tc.arguments} for tc in parsed],
+            },
+            rf".\logs\{get_current_time()}.json",
+        )
         return LLMResponse(
             content="".join(content_parts),
             tool_calls=parsed,
@@ -189,11 +203,11 @@ class LLM:
             except (RateLimitError, APITimeoutError, APIConnectionError) as e:
                 if attempt == max_retries - 1:
                     raise
-                wait = 2 ** attempt
+                wait = 2**attempt
                 time.sleep(wait)
             except APIError as e:
                 # 5xx = server error, retry; 4xx = client error, don't
                 if e.status_code and e.status_code >= 500 and attempt < max_retries - 1:
-                    time.sleep(2 ** attempt)
+                    time.sleep(2**attempt)
                 else:
                     raise
