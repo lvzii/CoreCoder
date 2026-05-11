@@ -88,6 +88,21 @@ corecoder -m qwen3:32b
 corecoder -p "add error handling to parse_config()"
 ```
 
+### Non-OpenAI providers (Bedrock, Vertex, Cohere, …)
+
+For providers without an OpenAI-compatible endpoint, install the optional LiteLLM extra:
+
+```bash
+pip install 'corecoder[litellm]'
+
+export CORECODER_PROVIDER=litellm
+export CORECODER_MODEL=anthropic/claude-3-haiku   # any LiteLLM model string
+export ANTHROPIC_API_KEY=sk-ant-...
+corecoder
+```
+
+LiteLLM routes through to 100+ providers (Bedrock, Vertex AI, Cohere, Groq, Replicate, Anyscale, etc.) using one model-string convention. The default `openai` backend is unchanged.
+
 ## Architecture
 
 The whole thing fits in your head:
@@ -170,6 +185,13 @@ I wrote [7 articles](article/) breaking down Claude Code's architecture — the 
 No, and that's intentional. CoreCoder is the minimal runnable core — agent loop, tools, streaming, compaction. Skills, Subagents, MCP, hooks, and plugins are upper-layer features that Claude Code layers on top; if CoreCoder had them too it would stop being a teaching artifact. The architecture articles above cover how those systems work in Claude Code, so you can add them yourself if you need to.
 
 If you want Skills specifically, the recipe is small: scan `~/.claude/skills/*.md` at startup, list their titles in the system prompt, and let the agent ask for a skill by name before you inline that file's body into the conversation.
+
+## Related Projects
+
+- **[CodeJoust](https://github.com/he-yufeng/CodeJoust)** — a CLI arena that races Claude Code, aider, Codex, and Gemini (Cursor + OpenHands next) on the same bug in isolated git worktrees, scores by tests+cost+diff+time, hands you the winning patch. If you ever wondered *which* AI coding CLI is actually better for your task, CodeJoust answers it empirically.
+- **[AnyCoder](https://github.com/he-yufeng/AnyCoder)** — a practical terminal AI coding agent built on the same architecture as CoreCoder but with litellm, session persistence, and 100+ model support. Use this one if you want a tool; use CoreCoder if you want to read source.
+- **[LiteBench](https://github.com/he-yufeng/LiteBench)** — one-command LLM / agent benchmark. Ships 7 built-in tasks (HumanEval/GSM8K/MMLU/...) and YAML-defined custom tasks, with a single-file HTML dashboard.
+- **[RepoWiki](https://github.com/he-yufeng/RepoWiki)** — open-source DeepWiki alternative. `pip install repowiki`, one command to turn any local or GitHub repo into a wiki with dependency graph, architecture diagram, and LLM-generated module pages.
 
 ## License
 
