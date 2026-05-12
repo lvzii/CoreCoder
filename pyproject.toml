@@ -33,6 +33,8 @@ dependencies = [
     "prompt_toolkit>=3.0",
     "python-dotenv>=1.0",
     "nlpertools>=1.0.12",
+    "fastmcp>=3.2.4",
+    "requests>=2.33.1",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -40,6 +42,9 @@ packages = ["corecoder"]
 
 [project.optional-dependencies]
 litellm = ["litellm>=1.60.0,<2.0.0"]
+mcp = ["fastmcp>=2.0"]
+ddg = ["duckduckgo-search>=6.0"]
+bing = ["httpx>=0.27"]
 dev = ["pytest>=7.0"]
 
 [project.scripts]

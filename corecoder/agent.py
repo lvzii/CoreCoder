@@ -11,7 +11,7 @@ which means it's done working and ready to report back.
 
 import concurrent.futures
 from .llm import LLM
-from .tools import ALL_TOOLS, get_tool
+from .tools import ALL_TOOLS
 from .tools.base import Tool
 from .tools.agent import AgentTool
 from .prompt import system_prompt
@@ -23,6 +23,7 @@ class Agent:
         self,
         llm: LLM,
         tools: list[Tool] | None = None,
+        mcp_servers: list[str] | None = None,
         max_context_tokens: int = 128_000,
         max_rounds: int = 50,
     ):
@@ -31,6 +32,14 @@ class Agent:
         self.messages: list[dict] = []
         self.context = ContextManager(max_tokens=max_context_tokens)
         self.max_rounds = max_rounds
+
+        # discover and add MCP tools
+        if mcp_servers:
+            from .mcp_client import discover_mcp_tools
+
+            print("load mcp")
+            self.tools.extend(discover_mcp_tools(mcp_servers))
+            print(self.tools)
         self._system = system_prompt(self.tools)
 
         # wire up sub-agent capability
@@ -70,20 +79,24 @@ class Agent:
                 if on_tool:
                     on_tool(tc.name, tc.arguments)
                 result = self._exec_tool(tc)
-                self.messages.append({
-                    "role": "tool",
-                    "tool_call_id": tc.id,
-                    "content": result,
-                })
+                self.messages.append(
+                    {
+                        "role": "tool",
+                        "tool_call_id": tc.id,
+                        "content": result,
+                    }
+                )
             else:
                 # parallel execution for multiple tool calls
                 results = self._exec_tools_parallel(resp.tool_calls, on_tool)
                 for tc, result in zip(resp.tool_calls, results):
-                    self.messages.append({
-                        "role": "tool",
-                        "tool_call_id": tc.id,
-                        "content": result,
-                    })
+                    self.messages.append(
+                        {
+                            "role": "tool",
+                            "tool_call_id": tc.id,
+                            "content": result,
+                        }
+                    )
 
             # compress if tool outputs are big
             self.context.maybe_compress(self.messages, self.llm)
@@ -92,7 +105,7 @@ class Agent:
 
     def _exec_tool(self, tc) -> str:
         """Execute a single tool call, returning the result string."""
-        tool = get_tool(tc.name)
+        tool = next((t for t in self.tools if t.name == tc.name), None)
         if tool is None:
             return f"Error: unknown tool '{tc.name}'"
         try:

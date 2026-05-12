@@ -34,6 +34,7 @@ class Config:
     temperature: float = 0.0
     max_context_tokens: int = 128_000
     provider: str = "openai"
+    mcp_servers: list[str] | None = None
 
     @classmethod
     def from_env(cls) -> "Config":

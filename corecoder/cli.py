@@ -31,6 +31,8 @@ def _parse_args():
     p.add_argument("-p", "--prompt", help="One-shot prompt (non-interactive mode)")
     p.add_argument("-r", "--resume", metavar="ID", help="Resume a saved session")
     p.add_argument("-v", "--version", action="version", version=f"%(prog)s {__version__}")
+    p.add_argument("--mcp", action="append", default=[], metavar="SERVER",
+                   help="MCP server script to connect to (repeatable)")
     return p.parse_args()
 
 
@@ -70,7 +72,8 @@ def main():
         temperature=config.temperature,
         max_tokens=config.max_tokens,
     )
-    agent = Agent(llm=llm, max_context_tokens=config.max_context_tokens)
+    agent = Agent(llm=llm, max_context_tokens=config.max_context_tokens,
+                  mcp_servers=args.mcp or None)
 
     # resume saved session
     if args.resume:
@@ -92,7 +95,7 @@ def main():
         return
 
     # interactive REPL
-    _repl(agent, config)
+    _repl(agent, config, mcp_servers=args.mcp)
 
 
 def _run_once(agent: Agent, prompt: str):
@@ -107,12 +110,13 @@ def _run_once(agent: Agent, prompt: str):
     print()
 
 
-def _repl(agent: Agent, config: Config):
+def _repl(agent: Agent, config: Config, mcp_servers: list[str] | None = None):
     """Interactive read-eval-print loop."""
     console.print(Panel(
         f"[bold]CoreCoder[/bold] v{__version__}\n"
         f"Model: [cyan]{config.model}[/cyan]"
         + (f"  Base: [dim]{config.base_url}[/dim]" if config.base_url else "")
+        + (f"\nMCP servers: [dim]{', '.join(mcp_servers)}[/dim]" if mcp_servers else "")
         + "\nType [bold]/help[/bold] for commands, [bold]Ctrl+C[/bold] to cancel, [bold]quit[/bold] to exit.",
         border_style="blue",
     ))
